@@ -42,7 +42,7 @@ def payment_process(request):
                 'quantity': item.quantity,
             })
 
-        # Stripe coupon
+
         if order.coupon:
             stripe_coupon = stripe.Coupon.create(
                                 name=order.coupon.code,
@@ -52,10 +52,7 @@ def payment_process(request):
                 'coupon': stripe_coupon.id
             }]
 
-        # create Stripe checkout session
         session = stripe.checkout.Session.create(**session_data)
-
-        # redirect to Stripe payment form
         return redirect(session.url, code=303)
 
     else:
